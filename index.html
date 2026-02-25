@@ -349,6 +349,9 @@
       <label class="option">
         <input type="checkbox" id="opt-regex"> Usar expresiones regulares
       </label>
+      <label class="option">
+        <input type="checkbox" id="opt-header" checked> Conservar primera línea (encabezado)
+      </label>
     </div>
 
     <div id="stats-container" style="display:none">
@@ -461,7 +464,10 @@
     const caseSensitive = document.getElementById('opt-case').checked;
     const useRegex = document.getElementById('opt-regex').checked;
 
+    const keepHeader = document.getElementById('opt-header').checked;
     const lines = inputText.split('\n');
+    const header = keepHeader && lines.length > 0 ? lines[0] : null;
+    const bodyLines = keepHeader ? lines.slice(1) : lines;
     let matchers;
 
     try {
@@ -478,10 +484,11 @@
       return;
     }
 
-    const kept = lines.filter(line => matchers.some(rx => rx.test(line)));
+    const filteredBody = bodyLines.filter(line => matchers.some(rx => rx.test(line)));
+    const kept = header !== null ? [header, ...filteredBody] : filteredBody;
 
-    const total = lines.length;
-    const keptCount = kept.length;
+    const total = bodyLines.length;
+    const keptCount = filteredBody.length;
     const removedCount = total - keptCount;
     const pct = total > 0 ? Math.round((removedCount / total) * 100) : 0;
 
