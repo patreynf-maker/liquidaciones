@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Filtro de Líneas — YPF</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ypf-blue:    #003087;
+    --ypf-blue2:   #0047BB;
+    --ypf-sky:     #009BDE;
+    --ypf-yellow:  #FFD100;
+    --ypf-white:   #FFFFFF;
+    --ypf-light:   #F0F4F9;
+    --ypf-gray:    #C8D3E0;
+    --ypf-dark:    #001A4D;
+    --ypf-muted:   #6B82A0;
+    --ypf-danger:  #E8002D;
+    --ypf-success: #00A651;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--ypf-light);
+    color: var(--ypf-blue);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--ypf-blue);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header-stripe {
+    height: 6px;
+    background: var(--ypf-yellow);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo-svg {
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    color: var(--ypf-white);
+    border-left: 3px solid var(--ypf-yellow);
+    padding-left: 16px;
+  }
+
+  .logo-text h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    line-height: 1.1;
+  }
+
+  .logo-text p {
+    font-size: 0.75rem;
+    color: var(--ypf-gray);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  .header-tag {
+    background: var(--ypf-yellow);
+    color: var(--ypf-blue);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 2px;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    right: -40px;
+    top: 0;
+    width: 220px;
+    height: 100%;
+    background: var(--ypf-blue2);
+    transform: skewX(-8deg);
+    opacity: 0.4;
+  }
+
+  /* ── SUBHEADER ── */
+  .subheader {
+    background: var(--ypf-blue2);
+    padding: 10px 48px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .subheader span {
+    color: var(--ypf-sky);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .subheader .sep { color: var(--ypf-yellow); font-weight: 900; }
+
+  /* ── LAYOUT ── */
+  .main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 36px 24px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 820px) {
+    .main { grid-template-columns: 1fr; }
+    .header-inner { padding: 20px 24px; }
+    .subheader { padding: 10px 24px; }
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--ypf-white);
+    border-radius: 4px;
+    border-top: 4px solid var(--ypf-blue2);
+    box-shadow: 0 2px 12px rgba(0,48,135,0.08);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .card-full { grid-column: 1 / -1; }
+  .card-accent { border-top-color: var(--ypf-yellow); }
+
+  .card-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ypf-blue2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card-title .dot {
+    width: 8px; height: 8px;
+    background: var(--ypf-yellow);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── TEXTAREA ── */
+  textarea {
+    background: var(--ypf-light);
+    border: 1.5px solid var(--ypf-gray);
+    border-radius: 3px;
+    color: var(--ypf-blue);
+    font-family: 'Barlow', monospace;
+    font-size: 0.8rem;
+    line-height: 1.7;
+    padding: 14px 16px;
+    resize: vertical;
+    min-height: 260px;
+    width: 100%;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+
+  textarea:focus {
+    border-color: var(--ypf-sky);
+    box-shadow: 0 0 0 3px rgba(0,155,222,0.15);
+  }
+
+  textarea[readonly] {
+    background: #EEF5FB;
+    color: var(--ypf-blue);
+    border-color: #B8D0E8;
+  }
+
+  /* ── INPUT ROW ── */
+  .input-row { display: flex; gap: 8px; }
+
+  .input-row input {
+    flex: 1;
+    background: var(--ypf-light);
+    border: 1.5px solid var(--ypf-gray);
+    border-radius: 3px;
+    color: var(--ypf-blue);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.88rem;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .input-row input:focus {
+    border-color: var(--ypf-sky);
+    box-shadow: 0 0 0 3px rgba(0,155,222,0.15);
+  }
+
+  .input-row input::placeholder { color: var(--ypf-muted); }
+
+  /* ── BUTTONS ── */
+  .btn-add {
+    background: var(--ypf-blue2);
+    color: var(--ypf-white);
+    border: none;
+    border-radius: 3px;
+    padding: 10px 20px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    text-transform: uppercase;
+  }
+
+  .btn-add:hover { background: var(--ypf-blue); }
+  .btn-add:active { transform: scale(0.97); }
+
+  .btn-file {
+    background: transparent;
+    border: 1.5px solid var(--ypf-gray);
+    border-radius: 3px;
+    color: var(--ypf-muted);
+    cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+    padding: 9px 16px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+
+  .btn-file:hover { border-color: var(--ypf-sky); color: var(--ypf-sky); }
+
+  .btn-main {
+    background: var(--ypf-yellow);
+    color: var(--ypf-blue);
+    border: none;
+    border-radius: 3px;
+    padding: 15px 32px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 1.05rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex: 2;
+  }
+
+  .btn-main:hover { background: #e6bc00; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255,209,0,0.4); }
+  .btn-main:active { transform: translateY(0); }
+  .btn-main:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .btn-download {
+    background: var(--ypf-blue2);
+    color: var(--ypf-white);
+    border: none;
+    border-radius: 3px;
+    padding: 15px 24px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex: 1;
+  }
+
+  .btn-download:hover { background: var(--ypf-blue); }
+  .btn-download:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  /* ── TAGS ── */
+  .tags-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 38px;
+    align-items: center;
+  }
+
+  .tag {
+    background: var(--ypf-light);
+    border: 1.5px solid var(--ypf-blue2);
+    border-radius: 2px;
+    padding: 5px 10px 5px 14px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ypf-blue);
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: tagIn 0.18s ease;
+  }
+
+  @keyframes tagIn {
+    from { transform: scale(0.85); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+  }
+
+  .tag button {
+    background: none;
+    border: none;
+    color: var(--ypf-danger);
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 0;
+    font-weight: 700;
+  }
+
+  /* ── OPTIONS ── */
+  .options-row { display: flex; gap: 20px; flex-wrap: wrap; }
+
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: var(--ypf-muted);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .option input[type=checkbox] {
+    accent-color: var(--ypf-blue2);
+    width: 15px; height: 15px;
+    cursor: pointer;
+  }
+
+  /* ── STATS ── */
+  .stats-bar {
+    display: flex;
+    gap: 0;
+    border: 1.5px solid var(--ypf-gray);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .stat {
+    flex: 1;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-right: 1.5px solid var(--ypf-gray);
+    background: var(--ypf-white);
+  }
+
+  .stat:last-child { border-right: none; }
+
+  .stat-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--ypf-blue);
+  }
+
+  .stat-value.good { color: var(--ypf-success); }
+  .stat-value.bad  { color: var(--ypf-danger); }
+  .stat-value.hl   { color: var(--ypf-blue2); }
+
+  .stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ypf-muted);
+  }
+
+  /* ── ACTIONS ── */
+  .actions-row { display: flex; gap: 12px; }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    color: var(--ypf-muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 30px 0;
+    border: 1.5px dashed var(--ypf-gray);
+    border-radius: 3px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ypf-blue);
+    color: var(--ypf-muted);
+    text-align: center;
+    padding: 18px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  footer span { color: var(--ypf-yellow); }
+  #file-input { display: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-stripe"></div>
+  <div class="header-inner">
+    <div class="logo-wrap">
+      <svg class="logo-svg" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="72" height="72" rx="4" fill="#FFD100"/>
+        <text x="36" y="50" text-anchor="middle" font-family="Barlow Condensed, sans-serif" font-weight="900" font-size="30" fill="#003087" letter-spacing="-1">YPF</text>
+        <rect x="6" y="57" width="60" height="5" rx="1" fill="#003087"/>
+      </svg>
+      <div class="logo-text">
+        <h1>Filtro de Líneas</h1>
+        <p>Herramienta de procesamiento de archivos</p>
+      </div>
+    </div>
+    <div class="header-tag">Uso Interno</div>
+  </div>
+</header>
+
+<div class="subheader">
+  <span>YPF S.A.</span>
+  <span class="sep">›</span>
+  <span>Sistemas</span>
+  <span class="sep">›</span>
+  <span>Filtro de Archivos de Texto</span>
+</div>
+
+<div class="main">
+
+  <!-- ENTRADA -->
+  <div class="card">
+    <div class="card-title"><span class="dot"></span>Archivo de entrada</div>
+    <textarea id="input-text" placeholder="Pegue aquí el contenido del archivo, o utilice el botón para cargar un archivo .txt ..."></textarea>
+    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+      <button class="btn-file" onclick="document.getElementById('file-input').click()">↑ Cargar archivo .txt</button>
+      <input type="file" id="file-input" accept=".txt,.log,.csv" onchange="loadFile(event)">
+      <button class="btn-file" onclick="clearInput()" style="margin-left:auto;">✕ Limpiar</button>
+    </div>
+  </div>
+
+  <!-- CONFIG -->
+  <div class="card card-accent">
+    <div class="card-title"><span class="dot"></span>Cadenas de búsqueda</div>
+
+    <div class="input-row">
+      <input type="text" id="search-input"
+        placeholder="Ingrese una cadena y presione Enter o Agregar..."
+        onkeydown="if(event.key==='Enter') addTag()">
+      <button class="btn-add" onclick="addTag()">+ Agregar</button>
+    </div>
+
+    <div id="tags-container">
+      <div class="empty-state" id="empty-tags">Sin cadenas de búsqueda definidas</div>
+    </div>
+
+    <div class="options-row">
+      <label class="option">
+        <input type="checkbox" id="opt-case"> Sensible a mayúsculas
+      </label>
+      <label class="option">
+        <input type="checkbox" id="opt-regex"> Expresiones regulares
+      </label>
+      <label class="option">
+        <input type="checkbox" id="opt-header" checked> Conservar primera línea (encabezado)
+      </label>
+    </div>
+
+    <div id="stats-container" style="display:none;">
+      <div class="stats-bar">
+        <div class="stat">
+          <span class="stat-value hl" id="stat-total">0</span>
+          <span class="stat-label">Total líneas</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value good" id="stat-kept">0</span>
+          <span class="stat-label">Conservadas</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value bad" id="stat-removed">0</span>
+          <span class="stat-label">Eliminadas</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value hl" id="stat-pct">0%</span>
+          <span class="stat-label">Reducción</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="card card-full">
+    <div class="card-title"><span class="dot"></span>Resultado del filtrado</div>
+
+    <div id="output-empty" class="empty-state">
+      El resultado aparecerá aquí luego de ejecutar el filtro
+    </div>
+
+    <textarea id="output-text" style="display:none; min-height:300px;" readonly></textarea>
+
+    <div class="actions-row">
+      <button class="btn-main" onclick="runFilter()">⚡ Ejecutar filtro</button>
+      <button class="btn-download" id="btn-download" onclick="downloadResult()" disabled>↓ Descargar resultado</button>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>YPF S.A.</span> — Herramienta de uso interno — Gerencia de Sistemas
+</footer>
+
+<script>
+  let tags = [];
+
+  function addTag() {
+    const input = document.getElementById('search-input');
+    const val = input.value.trim();
+    if (!val || tags.includes(val)) { input.value = ''; return; }
+    tags.push(val);
+    input.value = '';
+    renderTags();
+  }
+
+  function removeTag(i) {
+    tags.splice(i, 1);
+    renderTags();
+  }
+
+  function renderTags() {
+    const container = document.getElementById('tags-container');
+    const empty = document.getElementById('empty-tags');
+    if (tags.length === 0) {
+      container.innerHTML = '';
+      container.appendChild(empty);
+      return;
+    }
+    container.innerHTML = '';
+    const wrap = document.createElement('div');
+    wrap.className = 'tags-wrap';
+    tags.forEach((t, i) => {
+      const tag = document.createElement('div');
+      tag.className = 'tag';
+      tag.innerHTML = `<span>${escapeHtml(t)}</span><button onclick="removeTag(${i})" title="Eliminar">×</button>`;
+      wrap.appendChild(tag);
+    });
+    container.appendChild(wrap);
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function loadFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      document.getElementById('input-text').value = ev.target.result;
+    };
+    reader.readAsText(file, 'UTF-8');
+    e.target.value = '';
+  }
+
+  function clearInput() {
+    document.getElementById('input-text').value = '';
+    document.getElementById('output-text').style.display = 'none';
+    document.getElementById('output-empty').style.display = 'block';
+    document.getElementById('stats-container').style.display = 'none';
+    document.getElementById('btn-download').disabled = true;
+  }
+
+  function runFilter() {
+    const inputText = document.getElementById('input-text').value;
+    if (!inputText.trim()) { alert('Por favor ingrese texto primero.'); return; }
+    if (tags.length === 0) { alert('Agregue al menos una cadena de búsqueda.'); return; }
+
+    const caseSensitive = document.getElementById('opt-case').checked;
+    const useRegex      = document.getElementById('opt-regex').checked;
+    const keepHeader    = document.getElementById('opt-header').checked;
+
+    const lines = inputText.split('\n');
+    const header = keepHeader && lines.length > 0 ? lines[0] : null;
+    const bodyLines = keepHeader ? lines.slice(1) : lines;
+
+    let matchers;
+    try {
+      matchers = tags.map(t => {
+        if (useRegex) return new RegExp(t, caseSensitive ? '' : 'i');
+        const escaped = t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        return new RegExp(escaped, caseSensitive ? '' : 'i');
+      });
+    } catch(err) {
+      alert('Error en expresión regular: ' + err.message);
+      return;
+    }
+
+    const filteredBody = bodyLines.filter(line => matchers.some(rx => rx.test(line)));
+    const kept = header !== null ? [header, ...filteredBody] : filteredBody;
+
+    const total        = bodyLines.length;
+    const keptCount    = filteredBody.length;
+    const removedCount = total - keptCount;
+    const pct = total > 0 ? Math.round((removedCount / total) * 100) : 0;
+
+    document.getElementById('stat-total').textContent   = total.toLocaleString('es-AR');
+    document.getElementById('stat-kept').textContent    = keptCount.toLocaleString('es-AR');
+    document.getElementById('stat-removed').textContent = removedCount.toLocaleString('es-AR');
+    document.getElementById('stat-pct').textContent     = pct + '%';
+    document.getElementById('stats-container').style.display = 'block';
+
+    const outTA = document.getElementById('output-text');
+    outTA.value = kept.join('\n');
+    outTA.style.display = 'block';
+    document.getElementById('output-empty').style.display = 'none';
+    document.getElementById('btn-download').disabled = false;
+    outTA.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function downloadResult() {
+    const text = document.getElementById('output-text').value;
+    if (!text) return;
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'resultado_filtrado.txt';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+</script>
+</body>
+</html>
