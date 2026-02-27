@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Filtro de Líneas — YPF</title>
+<title>Filtro de Líneas</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -31,7 +31,6 @@
     min-height: 100vh;
   }
 
-  /* HEADER */
   .header-stripe { height: 4px; background: var(--yellow); }
 
   header {
@@ -94,14 +93,12 @@
     border: 1px solid var(--gray3);
   }
 
-  /* NAV */
   .nav-bar {
     background: var(--dark);
     padding: 9px 48px;
     display: flex;
     align-items: center;
     gap: 6px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
   }
 
   .nav-bar span {
@@ -115,7 +112,6 @@
   .nav-bar .sep { color: var(--gray4); }
   .nav-bar .active { color: var(--sky); }
 
-  /* MAIN */
   .main {
     max-width: 1180px;
     margin: 0 auto;
@@ -131,7 +127,6 @@
     .nav-bar { padding: 9px 20px; }
   }
 
-  /* CARDS */
   .card {
     background: var(--white);
     border-radius: 3px;
@@ -143,7 +138,7 @@
     gap: 14px;
   }
 
-  .card-full { grid-column: 1 / -1; }
+  .card-full    { grid-column: 1 / -1; }
   .card-primary { border-left-color: var(--blue2); }
   .card-accent  { border-left-color: var(--sky); }
 
@@ -170,35 +165,145 @@
   .card-primary .card-title::before { background: var(--blue2); }
   .card-accent  .card-title::before { background: var(--sky); }
 
-  /* TEXTAREA */
-  textarea {
+  /* DROP ZONE */
+  .drop-zone {
+    border: 2px dashed var(--gray2);
+    border-radius: 4px;
+    padding: 48px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    user-select: none;
+  }
+
+  .drop-zone:hover, .drop-zone.dragover {
+    border-color: var(--sky);
+    background: #EEF5FB;
+  }
+
+  .drop-zone .dz-icon {
+    font-size: 2.4rem;
+    line-height: 1;
+    color: var(--gray3);
+  }
+
+  .drop-zone .dz-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gray4);
+  }
+
+  .drop-zone .dz-sub {
+    font-size: 0.78rem;
+    color: var(--gray3);
+    letter-spacing: 0.5px;
+  }
+
+  .drop-zone .dz-btn {
+    background: var(--blue2);
+    color: var(--white);
+    border: none;
+    border-radius: 3px;
+    padding: 8px 20px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 4px;
+  }
+
+  .drop-zone .dz-btn:hover { background: var(--blue); }
+
+  /* FILE LOADED STATE */
+  .file-loaded {
+    border: 1.5px solid var(--gray1);
+    border-radius: 4px;
+    padding: 16px 18px;
+    background: var(--light);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .file-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .file-info { flex: 1; min-width: 0; }
+
+  .file-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .file-meta {
+    font-size: 0.75rem;
+    color: var(--gray3);
+    margin-top: 3px;
+    letter-spacing: 0.5px;
+  }
+
+  .file-remove {
+    background: none;
+    border: 1px solid var(--gray2);
+    border-radius: 3px;
+    color: var(--gray3);
+    cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    padding: 5px 10px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .file-remove:hover { border-color: var(--danger); color: var(--danger); }
+
+  /* TEXT PREVIEW */
+  .preview-box {
     background: var(--light);
     border: 1px solid var(--gray1);
     border-radius: 3px;
-    color: var(--dark);
-    font-family: 'Barlow', monospace;
-    font-size: 0.79rem;
-    line-height: 1.7;
     padding: 12px 14px;
-    resize: vertical;
-    min-height: 250px;
-    width: 100%;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    outline: none;
+    font-family: 'Barlow', monospace;
+    font-size: 0.78rem;
+    line-height: 1.7;
+    color: var(--gray4);
+    max-height: 180px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
   }
 
-  textarea:focus {
-    border-color: var(--sky);
-    box-shadow: 0 0 0 3px rgba(0,155,222,0.12);
+  .preview-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray3);
+    margin-bottom: 4px;
   }
 
-  textarea[readonly] {
-    background: #F7F9FB;
-    color: var(--dark);
-    border-color: var(--gray1);
-  }
-
-  /* INPUT */
+  /* INPUT ROW */
   .input-row { display: flex; gap: 8px; }
 
   .input-row input {
@@ -238,23 +343,6 @@
   }
 
   .btn-add:hover { background: var(--blue); }
-
-  .btn-file {
-    background: transparent;
-    border: 1px solid var(--gray2);
-    border-radius: 3px;
-    color: var(--gray3);
-    cursor: pointer;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600;
-    font-size: 0.75rem;
-    letter-spacing: 1px;
-    padding: 8px 14px;
-    text-transform: uppercase;
-    transition: all 0.2s;
-  }
-
-  .btn-file:hover { border-color: var(--sky); color: var(--sky); }
 
   .btn-main {
     background: var(--blue);
@@ -324,6 +412,7 @@
     font-size: 1rem; line-height: 1; padding: 0;
     transition: color 0.15s;
   }
+
   .tag button:hover { color: var(--danger); }
 
   /* OPTIONS */
@@ -354,6 +443,7 @@
     gap: 3px;
     border-right: 1px solid var(--gray1);
   }
+
   .stat:last-child { border-right: none; }
 
   .stat-value {
@@ -376,10 +466,24 @@
     color: var(--gray3);
   }
 
-  /* ACTIONS */
+  /* RESULT PREVIEW */
+  textarea.result-area {
+    background: #F7F9FB;
+    border: 1px solid var(--gray1);
+    border-radius: 3px;
+    color: var(--dark);
+    font-family: 'Barlow', monospace;
+    font-size: 0.79rem;
+    line-height: 1.7;
+    padding: 12px 14px;
+    resize: vertical;
+    min-height: 280px;
+    width: 100%;
+    outline: none;
+  }
+
   .actions-row { display: flex; gap: 10px; }
 
-  /* EMPTY */
   .empty-state {
     text-align: center;
     color: var(--gray2);
@@ -392,7 +496,6 @@
     border-radius: 3px;
   }
 
-  /* FOOTER */
   footer {
     background: var(--dark);
     color: var(--gray4);
@@ -415,8 +518,7 @@
 
 <header>
   <div class="logo-wrap">
-    <div class="logo-box"><span>YPF</span></div>
-    <div class="logo-text">
+    <div class="logo-text" style="border-left:none; padding-left:0;">
       <h1>Filtro de Líneas</h1>
       <p>Procesamiento de archivos de texto</p>
     </div>
@@ -425,8 +527,6 @@
 </header>
 
 <div class="nav-bar">
-  <span>YPF S.A.</span>
-  <span class="sep">›</span>
   <span>Sistemas</span>
   <span class="sep">›</span>
   <span class="active">Filtro de Archivos</span>
@@ -434,16 +534,44 @@
 
 <div class="main">
 
+  <!-- ARCHIVO DE ENTRADA -->
   <div class="card card-primary">
     <div class="card-title">Archivo de entrada</div>
-    <textarea id="input-text" placeholder="Pegue aquí el contenido del archivo, o utilice el botón para cargar un archivo .txt ..."></textarea>
-    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-      <button class="btn-file" onclick="document.getElementById('file-input').click()">↑ Cargar archivo</button>
-      <input type="file" id="file-input" accept=".txt,.log,.csv" onchange="loadFile(event)">
-      <button class="btn-file" onclick="clearInput()" style="margin-left:auto;">✕ Limpiar</button>
+
+    <!-- Drop zone (visible cuando no hay archivo) -->
+    <div class="drop-zone" id="drop-zone"
+         onclick="document.getElementById('file-input').click()"
+         ondragover="onDragOver(event)"
+         ondragleave="onDragLeave(event)"
+         ondrop="onDrop(event)">
+      <div class="dz-icon">📄</div>
+      <div class="dz-title">Arrastre su archivo aquí</div>
+      <div class="dz-sub">o haga clic para seleccionar</div>
+      <button class="dz-btn" onclick="event.stopPropagation(); document.getElementById('file-input').click()">
+        Seleccionar archivo .txt
+      </button>
+    </div>
+
+    <input type="file" id="file-input" accept=".txt,.log,.csv" onchange="loadFile(event)">
+
+    <!-- Info del archivo cargado (oculto inicialmente) -->
+    <div class="file-loaded" id="file-loaded" style="display:none;">
+      <div class="file-icon">📄</div>
+      <div class="file-info">
+        <div class="file-name" id="file-name">—</div>
+        <div class="file-meta" id="file-meta">—</div>
+      </div>
+      <button class="file-remove" onclick="clearFile()">✕ Quitar</button>
+    </div>
+
+    <!-- Preview del contenido -->
+    <div id="preview-wrap" style="display:none;">
+      <div class="preview-label">Vista previa del archivo</div>
+      <div class="preview-box" id="preview-box"></div>
     </div>
   </div>
 
+  <!-- CONFIGURACIÓN -->
   <div class="card card-accent">
     <div class="card-title">Cadenas de búsqueda</div>
 
@@ -492,10 +620,11 @@
     </div>
   </div>
 
+  <!-- RESULTADO -->
   <div class="card card-full">
     <div class="card-title">Resultado del filtrado</div>
     <div id="output-empty" class="empty-state">El resultado aparecerá aquí luego de ejecutar el filtro</div>
-    <textarea id="output-text" style="display:none; min-height:300px;" readonly></textarea>
+    <textarea class="result-area" id="output-text" style="display:none;" readonly></textarea>
     <div class="actions-row">
       <button class="btn-main" onclick="runFilter()">⚡ Ejecutar filtro</button>
       <button class="btn-download" id="btn-download" onclick="downloadResult()" disabled>↓ Descargar resultado</button>
@@ -505,12 +634,83 @@
 </div>
 
 <footer>
-  <em>YPF S.A.</em> — Herramienta de uso interno — Gerencia de Sistemas
+  <em>Herramienta de uso interno</em> — Gerencia de Sistemas
 </footer>
 
 <script>
   let tags = [];
+  let fileContent = '';
+  let fileName = '';
 
+  /* ── ARCHIVO ── */
+  function loadFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    processFile(file);
+    e.target.value = '';
+  }
+
+  function processFile(file) {
+    fileName = file.name;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      fileContent = ev.target.result;
+      showFileLoaded(file);
+    };
+    reader.readAsText(file, 'UTF-8');
+  }
+
+  function showFileLoaded(file) {
+    const lines = fileContent.split('\n').length;
+    const kb = (file.size / 1024).toFixed(1);
+
+    document.getElementById('drop-zone').style.display   = 'none';
+    document.getElementById('file-loaded').style.display = 'flex';
+    document.getElementById('file-name').textContent     = fileName;
+    document.getElementById('file-meta').textContent     = `${lines.toLocaleString('es-AR')} líneas · ${kb} KB`;
+
+    // preview: primeras 20 líneas
+    const preview = fileContent.split('\n').slice(0, 20).join('\n');
+    document.getElementById('preview-box').textContent  = preview;
+    document.getElementById('preview-wrap').style.display = 'block';
+
+    // reset output
+    document.getElementById('output-text').style.display  = 'none';
+    document.getElementById('output-empty').style.display = 'block';
+    document.getElementById('stats-container').style.display = 'none';
+    document.getElementById('btn-download').disabled = true;
+  }
+
+  function clearFile() {
+    fileContent = '';
+    fileName    = '';
+    document.getElementById('drop-zone').style.display    = 'flex';
+    document.getElementById('file-loaded').style.display  = 'none';
+    document.getElementById('preview-wrap').style.display = 'none';
+    document.getElementById('output-text').style.display  = 'none';
+    document.getElementById('output-empty').style.display = 'block';
+    document.getElementById('stats-container').style.display = 'none';
+    document.getElementById('btn-download').disabled = true;
+  }
+
+  /* ── DRAG & DROP ── */
+  function onDragOver(e) {
+    e.preventDefault();
+    document.getElementById('drop-zone').classList.add('dragover');
+  }
+
+  function onDragLeave(e) {
+    document.getElementById('drop-zone').classList.remove('dragover');
+  }
+
+  function onDrop(e) {
+    e.preventDefault();
+    document.getElementById('drop-zone').classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file) processFile(file);
+  }
+
+  /* ── TAGS ── */
   function addTag() {
     const input = document.getElementById('search-input');
     const val = input.value.trim();
@@ -549,33 +749,16 @@
     return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
-  function loadFile(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = ev => { document.getElementById('input-text').value = ev.target.result; };
-    reader.readAsText(file, 'UTF-8');
-    e.target.value = '';
-  }
-
-  function clearInput() {
-    document.getElementById('input-text').value = '';
-    document.getElementById('output-text').style.display = 'none';
-    document.getElementById('output-empty').style.display = 'block';
-    document.getElementById('stats-container').style.display = 'none';
-    document.getElementById('btn-download').disabled = true;
-  }
-
+  /* ── FILTRO ── */
   function runFilter() {
-    const inputText = document.getElementById('input-text').value;
-    if (!inputText.trim()) { alert('Por favor ingrese texto primero.'); return; }
+    if (!fileContent) { alert('Por favor cargue un archivo primero.'); return; }
     if (tags.length === 0) { alert('Agregue al menos una cadena de búsqueda.'); return; }
 
     const caseSensitive = document.getElementById('opt-case').checked;
     const useRegex      = document.getElementById('opt-regex').checked;
     const keepHeader    = document.getElementById('opt-header').checked;
 
-    const lines = inputText.split('\n');
+    const lines = fileContent.split('\n');
     const header = keepHeader && lines.length > 0 ? lines[0] : null;
     const bodyLines = keepHeader ? lines.slice(1) : lines;
 
@@ -613,13 +796,15 @@
     outTA.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  /* ── DESCARGA ── */
   function downloadResult() {
     const text = document.getElementById('output-text').value;
     if (!text) return;
     const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'resultado_filtrado.txt';
+    // Usar el mismo nombre del archivo original
+    a.download = fileName || 'resultado_filtrado.txt';
     a.click();
     URL.revokeObjectURL(a.href);
   }
