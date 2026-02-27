@@ -510,6 +510,62 @@
   footer em { color: var(--gray3); font-style: normal; }
 
   #file-input { display: none; }
+
+  /* PRESETS */
+  .preset-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray3);
+    margin-bottom: -4px;
+  }
+
+  .preset-btns { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+  .btn-preset {
+    background: var(--light);
+    border: 1.5px solid var(--gray2);
+    border-radius: 3px;
+    color: var(--dark);
+    cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    padding: 8px 16px;
+    transition: all 0.2s;
+  }
+
+  .btn-preset:hover { border-color: var(--sky); color: var(--sky); background: #EEF5FB; }
+  .btn-preset.active { background: var(--blue2); color: var(--white); border-color: var(--blue2); }
+
+  .btn-preset-clear {
+    background: none;
+    border: 1px solid var(--gray2);
+    border-radius: 3px;
+    color: var(--gray3);
+    cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    padding: 6px 12px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    margin-left: auto;
+  }
+
+  .btn-preset-clear:hover { border-color: var(--danger); color: var(--danger); }
+
+  .divider-label {
+    text-align: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 1.5px;
+    color: var(--gray3);
+    margin: 2px 0;
+  }
 </style>
 </head>
 <body>
@@ -574,6 +630,14 @@
   <!-- CONFIGURACIÓN -->
   <div class="card card-accent">
     <div class="card-title">Cadenas de búsqueda</div>
+
+    <div class="preset-label">Conjuntos predefinidos</div>
+    <div class="preset-btns">
+      <button class="btn-preset" id="preset-quequen" onclick="applyPreset('quequen')">📍 Quequén</button>
+      <button class="btn-preset" id="preset-politas" onclick="applyPreset('politas')">📍 Politas</button>
+      <button class="btn-preset-clear" onclick="clearPreset()">✕ Limpiar</button>
+    </div>
+    <div class="divider-label">— o ingrese cadenas manualmente —</div>
 
     <div class="input-row">
       <input type="text" id="search-input"
@@ -808,6 +872,31 @@
     a.click();
     URL.revokeObjectURL(a.href);
   }
+
+  /* ── PRESETS ── */
+  const PRESETS = {
+    quequen: { label: 'Quequén', tags: ['30981210', '30983720', '30983759', '30983761'] },
+    politas: { label: 'Politas', tags: ['32254772', '32245217', '32254757', '32254807'] }
+  };
+
+  let activePreset = null;
+
+  function applyPreset(key) {
+    activePreset = key;
+    tags = [...PRESETS[key].tags];
+    renderTags();
+    document.getElementById('preset-quequen').classList.toggle('active', key === 'quequen');
+    document.getElementById('preset-politas').classList.toggle('active', key === 'politas');
+  }
+
+  function clearPreset() {
+    activePreset = null;
+    tags = [];
+    renderTags();
+    document.getElementById('preset-quequen').classList.remove('active');
+    document.getElementById('preset-politas').classList.remove('active');
+  }
+
 </script>
 </body>
 </html>
